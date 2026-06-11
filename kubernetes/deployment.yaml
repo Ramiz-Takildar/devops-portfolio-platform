@@ -50,7 +50,7 @@ spec:
 
       containers:
         - name: app
-          image: ghcr.io/yourusername/devops-portfolio-app:main
+          image: ghcr.io/ramiz-takildar/devops-portfolio-platform:main
           imagePullPolicy: IfNotPresent
 
           ports:
