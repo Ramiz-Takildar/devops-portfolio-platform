@@ -21,6 +21,8 @@ KIND Cluster: devops-app namespace
     ├── Ingress
     ├── ConfigMap
     └── Secret
+
+> **Note**: HorizontalPodAutoscaler (HPA) was removed from the manifests. ArgoCD now fully manages the Deployment replica count.
 ```
 
 ## Installation
@@ -33,7 +35,7 @@ KIND Cluster: devops-app namespace
 This will:
 1. Create `argocd` namespace
 2. Install ArgoCD components
-3. Patch ArgoCD server to NodePort 30443
+3. Patch ArgoCD server to NodePort
 4. Apply the Application manifest
 
 ## ArgoCD Application Configuration
@@ -46,6 +48,7 @@ Key settings:
 - **TargetRevision**: `main`
 - **Destination**: `devops-app` namespace
 - **SyncPolicy**: Auto-sync with prune, self-heal, retry backoff
+- **ignoreDifferences**: Ignores the server-managed `deployment.kubernetes.io/revision` annotation so ArgoCD shows the Deployment as **Synced** instead of **OutOfSync**
 
 ## Access ArgoCD UI
 
@@ -128,13 +131,21 @@ kubectl get application devops-portfolio -n argocd -o jsonpath='{.status.health.
 
 ### Application shows OutOfSync
 
-If the application shows OutOfSync, verify the manifests are correct and the cluster can apply them. Check the ArgoCD UI for specific diff details.
+If the application shows OutOfSync, check the diff in the ArgoCD UI to identify the exact field.
+
+Common causes:
+1. **Deployment revision annotation** — already handled by `ignoreDifferences` in `argocd/application.yaml`.
+2. **Ingress shows Progressing** — expected in KIND without an Ingress Controller. The Ingress resource works fine for routing but ArgoCD sees an empty `status.loadBalancer` and marks it Progressing. Install the NGINX Ingress Controller to resolve:
+   ```bash
+   kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+   kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=120s
+   ```
 
 ```bash
 # Force a sync
-argocd app sync devops-portfolio --force
+argocd app sync devops-portfolio --prune --force
 
-# Or via UI: click "Sync" → check "Force" → click "Synchronize"
+# Or via UI: click "Sync" → check "Prune" + "Force" → click "Synchronize"
 ```
 
 ### Can't access ArgoCD UI
@@ -146,7 +157,7 @@ kubectl get pods -n argocd
 # Restart port-forward
 kubectl port-forward svc/argocd-server -n argocd 8443:443
 
-# Or use NodePort directly (if on Linux)
+# Or use NodePort directly (requires extra KIND port mapping)
 curl -k https://localhost:30443
 ```
 

@@ -30,7 +30,7 @@ Developer → GitHub → GitHub Actions → Docker Build → GHCR → KIND Clust
 │  │ • flake8 lint                      │  │ • Multi-arch Docker build      │ │
 │  │ • pytest unit tests                │  │ • Trivy image scan             │ │
 │  │ • Trivy filesystem scan            │  │ • Push to GHCR                 │ │
-│  │                                    │  │ • KIND deploy validation       │ │
+│  │                                    │  │ • ArgoCD GitOps deploy         │ │
 │  └────────────────────────────────────┘  └────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────────────┘
                                       │

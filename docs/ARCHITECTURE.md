@@ -68,7 +68,7 @@ Split workflow design:
 - Multi-arch Docker build (QEMU emulation)
 - Trivy image scan
 - GHCR publish
-- KIND deploy validation
+- ArgoCD GitOps sync (local KIND cluster)
 - Runs only on main branch and tags
 
 Branch protection:

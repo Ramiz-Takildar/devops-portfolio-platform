@@ -30,7 +30,6 @@ The DevOps Portfolio Platform uses GitHub Actions for continuous integration and
 | Job | Purpose | Tools |
 |-----|---------|-------|
 | `build-and-push` | Multi-arch image build and registry push | docker/build-push-action, docker/metadata-action |
-| `deploy-validation` | KIND cluster validation | helm/kind-action, kubectl |
 
 **Key Features**:
 - Multi-architecture builds (AMD64 + ARM64)
@@ -38,7 +37,8 @@ The DevOps Portfolio Platform uses GitHub Actions for continuous integration and
 - Semantic versioning via docker/metadata-action
 - Image vulnerability scanning before push
 - SBOM generation (SPDX format)
-- KIND-based smoke tests post-build
+
+> **Note**: Deployment is handled by ArgoCD GitOps on the local KIND cluster, not by GitHub Actions. The CD workflow only builds and pushes the image. ArgoCD detects the new image tag and syncs automatically.
 
 ## Required Secrets
 
@@ -76,6 +76,22 @@ The CD workflow automatically generates:
 - `ghcr.io/owner/repo:1.2`
 - `ghcr.io/owner/repo:1`
 - `ghcr.io/owner/repo:latest` (on default branch only)
+
+## Deployment Flow
+
+```
+Developer push ──► GitHub Actions CI ──► GitHub Actions CD ──► GHCR
+                                                    │
+                                                    ▼
+                                              ArgoCD (local)
+                                                    │
+                                                    ▼
+                                               KIND Cluster
+```
+
+1. **CI** runs on every push/PR to `main` or `develop`
+2. **CD** runs on push to `main` or tags — builds and pushes image to GHCR
+3. **ArgoCD** watches the repo and auto-syncs manifests to the local KIND cluster
 
 ## Local Testing
 
