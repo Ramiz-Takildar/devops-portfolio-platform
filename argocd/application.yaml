@@ -16,6 +16,13 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: devops-app
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      jsonPointers:
+        - /metadata/annotations/deployment.kubernetes.io~1revision
+      name: devops-app
+      namespace: devops-app
   syncPolicy:
     automated:
       prune: true
