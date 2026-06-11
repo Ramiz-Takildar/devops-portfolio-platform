@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: devops-app-config
+  namespace: devops-app
+  labels:
+    app.kubernetes.io/name: devops-portfolio-app
+    app.kubernetes.io/component: config
+data:
+  APP_NAME: "devops-portfolio-app"
+  APP_ENV: "production"
+  LOG_LEVEL: "INFO"
+  PORT: "5000"

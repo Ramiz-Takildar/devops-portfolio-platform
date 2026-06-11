@@ -1,0 +1,286 @@
+Act as a Principal DevOps Engineer, Kubernetes Administrator, SRE, and Platform Engineer with 15+ years of enterprise experience.
+
+Your task is to design and implement a complete Production-Grade DevOps Project that can run entirely on a local KIND (Kubernetes in Docker) cluster while following real-world enterprise DevOps and SRE practices.
+
+The project should be designed as a portfolio-quality project that demonstrates skills in:
+
+- Git & GitHub
+- GitHub Actions CI/CD
+- Docker
+- Kubernetes (KIND)
+- Prometheus
+- Grafana
+- Monitoring & Alerting
+- Troubleshooting
+- DevOps Best Practices
+
+The project should simulate how a real production environment works even though it runs locally.
+
+====================================================================
+PROJECT GOAL
+====================================================================
+
+Build a complete end-to-end DevOps platform around a simple web application.
+
+The final architecture should include:
+
+Developer → GitHub → GitHub Actions → Docker Build → Docker Registry → Kubernetes Deployment → Prometheus Monitoring → Grafana Dashboards → Alerting
+
+====================================================================
+TECHNOLOGY STACK
+====================================================================
+
+Application:
+- Python Flask (preferred) or Node.js Express
+
+DevOps Tools:
+- Git
+- GitHub
+- GitHub Actions
+- Docker
+- KIND Cluster
+- kubectl
+- Kubernetes
+- Prometheus
+- Grafana
+
+====================================================================
+EXPECTED OUTPUT FORMAT
+====================================================================
+
+Provide the implementation in phases.
+
+For every phase provide:
+
+1. Objective
+2. Architecture Explanation
+3. Folder Structure
+4. Configuration Files
+5. Source Code
+6. YAML Manifests
+7. Commands
+8. Validation Steps
+9. Troubleshooting Steps
+10. Best Practices
+
+Do not skip any configuration.
+
+Explain every file and command.
+
+====================================================================
+PHASE 1 - APPLICATION DEVELOPMENT
+====================================================================
+
+Create a production-ready web application with:
+
+Endpoints:
+- /
+- /health
+- /ready
+- /metrics
+- /version
+
+Requirements:
+
+- Structured JSON logging
+- Environment variable support
+- Configurable application version
+- Error handling
+- Health checks
+- Prometheus metrics integration
+- Docker-friendly design
+
+Provide:
+
+- Complete source code
+- Project structure
+- Dependency files
+- Testing instructions
+
+====================================================================
+PHASE 2 - DOCKERIZATION
+====================================================================
+
+Create:
+
+- Multi-stage Dockerfile
+- .dockerignore
+- Security best practices
+- Non-root container user
+- Health checks
+
+Explain:
+
+- Layer optimization
+- Image size reduction
+- Security hardening
+- Production best practices
+
+Provide commands for:
+
+- Build
+- Run
+- Inspect
+- Troubleshoot
+
+====================================================================
+PHASE 3 - GITHUB REPOSITORY DESIGN
+====================================================================
+
+Create a professional repository structure:
+
+project-root/
+├── app/
+├── kubernetes/
+├── monitoring/
+├── scripts/
+├── docs/
+├── tests/
+├── .github/
+│   └── workflows/
+├── Dockerfile
+├── README.md
+└── Makefile
+
+Explain every directory.
+
+====================================================================
+PHASE 4 - GITHUB ACTIONS CI/CD
+====================================================================
+
+Create a production-grade GitHub Actions pipeline.
+
+Pipeline Stages:
+
+1. Checkout Code
+2. Install Dependencies
+3. Linting
+4. Unit Tests
+5. Security Scan
+6. Docker Build
+7. Docker Image Scan
+8. Push Image
+9. Deploy Validation
+
+Provide:
+
+- Complete workflow YAML
+- GitHub Secrets configuration
+- Branch protection strategy
+- Pull Request workflow
+- Semantic versioning strategy
+
+====================================================================
+PHASE 5 - KIND CLUSTER SETUP
+====================================================================
+
+Provide complete installation guide for:
+
+- Docker
+- kubectl
+- KIND
+
+Create:
+
+- Single-node cluster
+- Multi-node cluster
+
+Explain:
+
+- Control Plane
+- Worker Nodes
+- Scheduler
+- API Server
+- etcd
+- kubelet
+- kube-proxy
+
+Provide cluster verification commands.
+
+====================================================================
+PHASE 6 - KUBERNETES DEPLOYMENT
+====================================================================
+
+Create Kubernetes manifests for:
+
+Namespace
+Deployment
+Service
+ConfigMap
+Secret
+Ingress
+Horizontal Pod Autoscaler
+
+Requirements:
+
+- Resource Requests
+- Resource Limits
+- Rolling Updates
+- Readiness Probes
+- Liveness Probes
+- Labels
+- Annotations
+
+Provide:
+
+- Complete YAML files
+- Deployment commands
+- Validation commands
+
+====================================================================
+PHASE 7 - OBSERVABILITY IMPLEMENTATION
+====================================================================
+
+Install Prometheus and Grafana.
+
+Configure:
+
+- Kubernetes monitoring
+- Application monitoring
+- Metrics scraping
+- Dashboard visualization
+
+Show:
+
+- Installation commands
+- Configuration files
+- ServiceMonitor setup
+- Metrics collection flow
+
+====================================================================
+PHASE 8 - GRAFANA DASHBOARDS
+====================================================================
+
+Create dashboards for:
+
+- CPU Usage
+- Memory Usage
+- Pod Status
+- Pod Restarts
+- Application Requests
+- Application Errors
+- Response Time
+- Cluster Health
+
+Explain every dashboard panel.
+
+====================================================================
+FINAL DELIVERABLE
+====================================================================
+
+Generate a complete step-by-step implementation guide that can be completed in 2–3 days by a DevOps Engineer.
+
+The output must include:
+
+- Full source code
+- Full Dockerfile
+- Full GitHub Actions workflows
+- Full Kubernetes YAML manifests
+- Full Prometheus configuration
+- Full Grafana setup
+- Commands after every step
+- Validation steps after every phase
+- Troubleshooting guide
+- Production-grade explanations
+
+Assume the project will be showcased in a DevOps portfolio and should look like a real enterprise implementation rather than a beginner tutorial.

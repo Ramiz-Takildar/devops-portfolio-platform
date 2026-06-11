@@ -1,0 +1,39 @@
+# ---------------------------------------------------------------------------
+# ServiceMonitor for the DevOps Portfolio Application
+#
+# Requires the Prometheus Operator to be installed.
+# The Prometheus Operator watches for ServiceMonitor resources and
+# dynamically updates the Prometheus scrape configuration.
+#
+# Installation:
+#   kubectl apply -f https://github.com/prometheus-operator/prometheus-operator/releases/download/v0.74.0/bundle.yaml
+# ---------------------------------------------------------------------------
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: devops-app
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: devops-portfolio-app
+    app.kubernetes.io/component: monitoring
+    app.kubernetes.io/part-of: observability
+spec:
+  namespaceSelector:
+    matchNames:
+      - devops-app
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: devops-portfolio-app
+      app.kubernetes.io/component: backend
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+      scrapeTimeout: 10s
+      honorLabels: true
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_namespace]
+          targetLabel: kubernetes_namespace
+        - sourceLabels: [__meta_kubernetes_pod_name]
+          targetLabel: kubernetes_pod_name

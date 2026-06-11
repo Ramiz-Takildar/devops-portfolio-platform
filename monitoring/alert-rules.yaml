@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-alert-rules
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/component: alerting
+data:
+  alerts.yml: |
+    groups:
+      - name: devops-app.rules
+        rules:
+          # High CPU usage
+          - alert: HighCPUUsage
+            expr: rate(container_cpu_usage_seconds_total{namespace="devops-app"}[5m]) > 0.8
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High CPU usage on {{ $labels.pod }}"
+              description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has CPU usage above 80% for more than 5 minutes."
+
+          # High memory usage
+          - alert: HighMemoryUsage
+            expr: container_memory_working_set_bytes{namespace="devops-app"} / container_spec_memory_limit_bytes{namespace="devops-app"} > 0.85
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "High memory usage on {{ $labels.pod }}"
+              description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has memory usage above 85% for more than 5 minutes."
+
+          # Pod crash loop
+          - alert: PodCrashLooping
+            expr: rate(kube_pod_container_status_restarts_total{namespace="devops-app"}[15m]) > 0
+            for: 5m
+            labels:
+              severity: critical
+            annotations:
+              summary: "Pod {{ $labels.pod }} is crash looping"
+              description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has restarted more than 0 times in the last 15 minutes."
+
+          # High error rate
+          - alert: HighErrorRate
+            expr: rate(http_errors_total[5m]) / rate(http_requests_total[5m]) > 0.05
+            for: 2m
+            labels:
+              severity: critical
+            annotations:
+              summary: "High error rate on {{ $labels.endpoint }}"
+              description: "Error rate for {{ $labels.endpoint }} is above 5% for more than 2 minutes."
+
+          # Pod not ready
+          - alert: PodNotReady
+            expr: kube_pod_status_ready{namespace="devops-app",condition="true"} == 0
+            for: 5m
+            labels:
+              severity: warning
+            annotations:
+              summary: "Pod {{ $labels.pod }} is not ready"
+              description: "Pod {{ $labels.pod }} in namespace {{ $labels.namespace }} has been not ready for more than 5 minutes."

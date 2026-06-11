@@ -1,0 +1,79 @@
+# ---------------------------------------------------------------------------
+# KIND Multi-Node Cluster Configuration
+#
+# This configuration simulates a production-like Kubernetes cluster
+# with separated control plane and worker nodes.
+#
+# Architecture:
+#   - 1 control-plane node (scheduler, controller-manager, API server, etcd)
+#   - 2 worker nodes (workload execution, kubelet, kube-proxy)
+#   - NGINX Ingress Controller ready
+#   - Local container registry support
+#
+# Components Explained:
+#   Control Plane:
+#     - API Server: Front-end for Kubernetes; validates and configures API objects
+#     - etcd: Distributed key-value store for cluster state
+#     - Scheduler: Assigns pods to nodes based on resource availability
+#     - Controller Manager: Runs controllers (replication, endpoints, namespace, etc.)
+#   Worker Nodes:
+#     - kubelet: Agent that ensures containers are running in a pod
+#     - kube-proxy: Network proxy that maintains network rules on nodes
+#     - Container Runtime: Runs containers (containerd in KIND)
+# ---------------------------------------------------------------------------
+
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: devops-cluster
+
+nodes:
+  # Control Plane node
+  - role: control-plane
+    image: kindest/node:v1.30.0
+    kubeadmConfigPatches:
+      - |
+        kind: InitConfiguration
+        nodeRegistration:
+          kubeletExtraArgs:
+            node-labels: "ingress-ready=true"
+    extraPortMappings:
+      # Ingress HTTP
+      - containerPort: 80
+        hostPort: 80
+        protocol: TCP
+      # Ingress HTTPS
+      - containerPort: 443
+        hostPort: 443
+        protocol: TCP
+      # Grafana (NodePort 30000)
+      - containerPort: 30000
+        hostPort: 3000
+        protocol: TCP
+      # Prometheus (NodePort 30090)
+      - containerPort: 30090
+        hostPort: 9090
+        protocol: TCP
+
+  # Worker Node 1
+  - role: worker
+    image: kindest/node:v1.30.0
+    labels:
+      tier: frontend
+    extraMounts:
+      - hostPath: /tmp/kind-worker1-data
+        containerPath: /data
+
+  # Worker Node 2
+  - role: worker
+    image: kindest/node:v1.30.0
+    labels:
+      tier: backend
+    extraMounts:
+      - hostPath: /tmp/kind-worker2-data
+        containerPath: /data
+
+# Containerd registry mirror for faster image pulls
+containerdConfigPatches:
+  - |
+    [plugins."io.containerd.grpc.v1.cri".registry.mirrors."docker.io"]
+      endpoint = ["https://mirror.gcr.io"]

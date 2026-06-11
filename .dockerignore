@@ -1,0 +1,57 @@
+# ---------------------------------------------------------------------------
+# Docker Ignore — prevent unnecessary files from entering the build context
+# ---------------------------------------------------------------------------
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# GitHub
+.github
+
+# Documentation
+*.md
+docs/
+
+# Tests and test artifacts
+tests/
+.pytest_cache/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.coverage
+htmlcov/
+
+# Virtual environments
+venv/
+.env
+.venv
+env/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Kubernetes and monitoring manifests (not needed in app image)
+kubernetes/
+monitoring/
+scripts/
+kind/
+
+# CI/CD and build artifacts
+Makefile
+docker-compose*.yml
+Dockerfile*
+
+# Logs
+*.log
+logs/
