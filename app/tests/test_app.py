@@ -1,11 +1,5 @@
 """Unit tests for the Flask application."""
 
-import sys
-import os
-
-# Ensure app/ is on the path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-
 import pytest
 from main import app
 

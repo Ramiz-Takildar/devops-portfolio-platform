@@ -32,6 +32,7 @@ BIND_PORT = int(os.getenv("PORT", "5000"))
 # Structured JSON Logging
 # ---------------------------------------------------------------------------
 
+
 class JSONFormatter(logging.Formatter):
     """Custom JSON formatter for structured logging."""
 
@@ -183,7 +184,6 @@ def health():
 @app.route("/ready", methods=["GET"])
 def ready():
     """Readiness probe — returns 200 only when app is ready to serve traffic."""
-    global _ready
     if _ready:
         return jsonify({"status": "ready", "timestamp": datetime.utcnow().isoformat() + "Z"}), 200
     return jsonify({"status": "not ready"}), 503
