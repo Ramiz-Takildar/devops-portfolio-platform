@@ -157,6 +157,8 @@ jobs:
 
       - name: Deploy to KIND
         run: |
+          kubectl apply -f kubernetes/namespace.yaml
+          sleep 2
           kubectl apply -f kubernetes/
           kubectl rollout status deployment/devops-app -n devops-app --timeout=120s
 
