@@ -150,7 +150,7 @@ PHASE 4 - GITHUB ACTIONS CI/CD
 
 Create a production-grade GitHub Actions pipeline.
 
-Pipeline Stages:
+Pipeline Stages (CI/CD):
 
 1. Checkout Code
 2. Install Dependencies
@@ -160,7 +160,8 @@ Pipeline Stages:
 6. Docker Build
 7. Docker Image Scan
 8. Push Image
-9. Deploy Validation
+
+> Deployment is handled by ArgoCD GitOps on the local KIND cluster, not by GitHub Actions.
 
 Provide:
 
