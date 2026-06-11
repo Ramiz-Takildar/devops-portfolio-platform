@@ -19,7 +19,6 @@ KIND Cluster: devops-app namespace
     ├── Deployment
     ├── Service
     ├── Ingress
-    ├── HPA
     ├── ConfigMap
     └── Secret
 ```
@@ -129,7 +128,7 @@ kubectl get application devops-portfolio -n argocd -o jsonpath='{.status.health.
 
 ### Application shows OutOfSync
 
-Some fields (like `replicas` when HPA is active) may show as OutOfSync because HPA modifies the Deployment's replica count. This is expected behavior — ArgoCD will still sync the other fields.
+If the application shows OutOfSync, verify the manifests are correct and the cluster can apply them. Check the ArgoCD UI for specific diff details.
 
 ```bash
 # Force a sync

@@ -45,12 +45,12 @@ Developer → GitHub → GitHub Actions → Docker Build → GHCR → KIND Clust
 │                              KIND CLUSTER (K8s)                             │
 │  ┌────────────────────────────────────────────────────────────────────────┐ │
 │  │  devops-app Namespace                                                   │ │
-│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌────────────┐   │ │
-│  │  │ Deployment  │  │ Service     │  │ Ingress     │  │ HPA        │   │ │
-│  │  │ (2 replicas)│  │ (ClusterIP) │  │ (NGINX)     │  │ (2-10 pods)│   │ │
-│  │  │ • Liveness  │  │ Port 80     │  │ devops-app  │  │ CPU 70%    │   │ │
-│  │  │ • Readiness │  │ Target 5000 │  │ .local      │  │ Mem 80%    │   │ │
-│  │  │ • Startup   │  └─────────────┘  └─────────────┘  └────────────┘   │ │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐                   │ │
+│  │  │ Deployment  │  │ Service     │  │ Ingress     │                   │ │
+│  │  │ (2 replicas)│  │ (ClusterIP) │  │ (NGINX)     │                   │ │
+│  │  │ • Liveness  │  │ Port 80     │  │ devops-app  │                   │ │
+│  │  │ • Readiness │  │ Target 5000 │  │ .local      │                   │ │
+│  │  │ • Startup   │  └─────────────┘  └─────────────┘                   │ │
 │  │  └─────────────┘                                                        │ │
 │  │  ConfigMap (app config)  │  Secret (sensitive data)                     │ │
 │  └────────────────────────────────────────────────────────────────────────┘ │
@@ -97,7 +97,6 @@ project-root/
 │   ├── deployment.yaml           # App deployment (2 replicas, probes, security)
 │   ├── service.yaml              # ClusterIP service
 │   ├── ingress.yaml              # NGINX ingress routing
-│   └── hpa.yaml                  # Horizontal Pod Autoscaler (2-10 replicas)
 ├── monitoring/                   # Observability stack
 │   ├── dashboards/               # Grafana dashboard JSON
 │   │   ├── infrastructure.json   # CPU, Memory, Pod Status, Restarts, Cluster Health
@@ -334,12 +333,6 @@ kind create cluster --config kind/single-node.yaml
 kind load docker-image devops-app:local --name devops-cluster
 # Or update deployment to use local image
 kubectl set image deployment/devops-app app=devops-app:local -n devops-app
-```
-
-**HPA shows <unknown> for current metrics**
-```bash
-# Install metrics-server for HPA to work
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 ```
 
 ## License

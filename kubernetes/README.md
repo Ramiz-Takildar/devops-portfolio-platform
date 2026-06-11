@@ -12,7 +12,6 @@ Production-grade Kubernetes manifests for deploying the application to a KIND cl
 | `deployment.yaml` | Application deployment with probes, resource limits |
 | `service.yaml` | ClusterIP service |
 | `ingress.yaml` | Ingress routing |
-| `hpa.yaml` | Horizontal Pod Autoscaler |
 
 ## Deployment
 

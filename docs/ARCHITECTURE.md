@@ -91,7 +91,7 @@ Namespace: devops-app
 │   └── Annotations: prometheus.io/scrape
 ├── Service: ClusterIP, port 80 → 5000
 ├── Ingress: NGINX, host-based routing
-└── HPA: 2-10 replicas, CPU 70%, memory 80%
+
 ```
 
 Deployment strategy:
@@ -158,7 +158,7 @@ Grafana Dashboards ← Querying ← Prometheus Data
 Current limits:
 - Single-node KIND cluster: ~4-8 pods depending on resources
 - Multi-node KIND cluster: ~12-20 pods across nodes
-- HPA maxReplicas: 10 (can be increased)
+- Replica count: 2 (can be increased in deployment.yaml)
 
 Production scaling path:
 - Replace KIND with EKS/GKE/AKS

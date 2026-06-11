@@ -162,30 +162,6 @@ kubectl describe pod -n devops-app <pod-name>
 # Check if liveness probe is too aggressive
 # Adjust initialDelaySeconds or periodSeconds in deployment.yaml
 ```
-
-### HPA shows current metrics as <unknown>
-
-**Symptom**: `kubectl get hpa -n devops-app` shows `<unknown>` for current CPU/memory.
-
-**Cause**: metrics-server is not installed in the KIND cluster.
-
-**Fix**:
-```bash
-# Install metrics-server with insecure TLS (for KIND)
-kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-
-# Patch metrics-server to skip TLS verification
-kubectl patch deployment metrics-server -n kube-system --type='json' -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value": "--kubelet-insecure-tls"}]'
-
-# Wait for metrics-server to be ready
-kubectl rollout status deployment metrics-server -n kube-system
-
-# Verify HPA
-curl http://localhost:8080/health
-# Wait 30 seconds
-kubectl get hpa -n devops-app
-```
-
 ## Monitoring Issues
 
 ### Prometheus targets show DOWN
