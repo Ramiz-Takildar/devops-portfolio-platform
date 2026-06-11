@@ -13,7 +13,7 @@ metadata:
     deployment.kubernetes.io/revision: "1"
     description: "Flask application deployment for DevOps Portfolio Platform"
 spec:
-  replicas: 2
+  replicas: 4
   strategy:
     type: RollingUpdate
     rollingUpdate:
