@@ -141,6 +141,10 @@ jobs:
           cluster_name: devops-cluster
           config: kind/single-node.yaml
 
+      - name: Lowercase image name
+        run: |
+          echo "IMAGE_NAME=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Verify cluster
         run: |
           kubectl cluster-info
